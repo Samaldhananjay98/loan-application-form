@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation Page</title>
+    <link rel="stylesheet" href="confirm stytle.css">
+    <script>
+        function validateOTP() {
+            var enteredOTP = document.getElementById("otp").value;
+            var randomOTP = sessionStorage.getItem("randomOTP");
+
+            if (enteredOTP === randomOTP) {
+                alert("Validation Successful!");
+                // Redirect to Pixel6 home page
+                window.location.replace("https://www.pixel6.com");
+            } else {
+                alert("Validation Failed! Please try again.");
+                // Reset the OTP form
+                document.getElementById("otp").value = "";
+            }
+        }
+
+        // Generate random 4-digit OTP and display it in the console
+        var randomOTP = Math.floor(1000 + Math.random() * 9000);
+        console.log("Random OTP: " + randomOTP);
+        sessionStorage.setItem("randomOTP", randomOTP);
+
+        // Extract first name from full name and display it
+        document.addEventListener("DOMContentLoaded", function() {
+            var fullName = sessionStorage.getItem("fullName");
+            var firstName = fullName.split(" ")[0];
+            document.getElementById("firstName").textContent = firstName;
+
+            var userEmail = sessionStorage.getItem("email");
+            document.getElementById("userEmail").textContent = userEmail;
+        });
+    </script>
+</head>
+<body>
+    <h1>Confirmation Page</h1>
+    <p>Dear <span id="firstName"></span>,</p>
+    <p>Thank you for your inquiry. A 4 digit verification number has been sent to your email: <span id="userEmail"></span>, please enter it in the following box and submit for confirmation:</p>
+    <input type="text" id="otp" placeholder="Enter OTP">
+    <button onclick="validateOTP()">Validate</button>
+</body>
+</html>

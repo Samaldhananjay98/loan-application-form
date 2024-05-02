@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Application</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+       // function validateFormAndRedirect() {
+            // Validate form inputs
+         //   var fullName = document.getElementById("fullName").value;
+          //  var nameRegex = /^[a-zA-Z ]{4,}$/;
+          //  if (!nameRegex.test(fullName)) {
+          //      alert("Please enter a valid full name (min two words each with min 4 characters).");
+           //     return false;
+           // }
+
+            // if (validateForm()) {
+                 //If form is valid, redirect to confirmation page
+              //   console.log("Form is valid");
+               //  window.location.href = "confirm.html";
+          //  console.log(validateForm())
+          //   }
+         //    else {
+      //  console.log("Form is not valid"); // Log if form is not valid
+   // }
+       // }
+
+       function validateFormAndRedirect() {
+    // Validate form inputs
+    var fullName = document.getElementById("fullName").value;
+    var email = document.getElementById("email").value;
+    var pan = document.getElementById("pan").value;
+    var loanAmount = document.getElementById("loanAmount").value;
+
+    // Simplified validation
+    if (!fullName || !email || !pan || !loanAmount) {
+        alert("Please fill in all fields.");
+        return false;
+    }
+
+    // Redirect to confirmation page
+    window.location.href = "confirm.html";
+    return true;
+}
+
+        function btnclick(){
+            location.href ="confirm.html"
+        }
+
+        function validateForm() {
+            // Validate Full Name
+            var fullName = document.getElementById("fullName").value;
+            var nameRegex = /^[a-zA-Z ]{4,}$/;
+            if (!nameRegex.test(fullName)) {
+                alert("Please enter a valid full name (min two words each with min 4 characters).");
+                return false;
+            }
+
+            // Validate Email
+            var email = document.getElementById("email").value;
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+
+            // Validate PAN
+            var pan = document.getElementById("pan").value;
+            var panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]$/;
+            if (!panRegex.test(pan)) {
+                alert("Please enter a valid PAN number in the format ABCDE1234F.");
+                return false;
+            }
+
+            // Validate Loan Amount
+           // var loanAmount = document.getElementById("loanAmount").value;
+           //if (isNaN(loanAmount) || loanAmount.length === 0 || parseInt(loanAmount) <= 0 || parseInt(loanAmount) > 999999999) {
+            //    alert("Please enter a valid loan amount (numeric, maximum of 9 digits).");
+             //  return false;
+          // }
+
+           // return true;
+
+           function convertNumberToWords(number) {
+    // Define arrays for units, tens, and scales
+    var units = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    var teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    var tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+    var scales = ['', 'Thousand', 'Million', 'Billion'];
+
+    // Function to recursively convert chunk of 3 digits to words
+    function convertChunkToWords(chunk) {
+        var result = '';
+        var hundreds = Math.floor(chunk / 100);
+        var remainder = chunk % 100;
+
+        if (hundreds > 0) {
+            result += units[hundreds] + ' Hundred ';
+        }
+
+        if (remainder > 0) {
+            if (remainder < 10) {
+                result += units[remainder];
+            } else if (remainder < 20) {
+                result += teens[remainder - 10];
+            } else {
+                result += tens[Math.floor(remainder / 10)] + ' ' + units[remainder % 10];
+            }
+        }
+
+        return result.trim();
+    }
+
+    // Function to convert whole number to words
+    function convertToWords(number) {
+        if (number === 0) {
+            return 'Zero';
+        }
+
+        var chunkCount = 0;
+        var result = '';
+
+        while (number > 0) {
+            var chunk = number % 1000;
+            if (chunk !== 0) {
+                result = convertChunkToWords(chunk) + ' ' + scales[chunkCount] + ' ' + result;
+            }
+            number = Math.floor(number / 1000);
+            chunkCount++;
+        }
+
+        return result.trim();
+    }
+
+    return convertToWords(number);
+}
+
+var loanAmount = document.getElementById("loanAmount").value;
+if (isNaN(loanAmount) || loanAmount === "" || parseInt(loanAmount) <= 0 || parseInt(loanAmount) > 999999999) {
+    alert("Please enter a valid loan amount (numeric, maximum of 9 digits).");
+    return false;
+} else {
+    var amountInWords = convertNumberToWords(parseInt(loanAmount));
+    alert(amountInWords);
+}
+
+            
+        }
+    </script>
+</head>
+<body>
+    <h1>Loan Application Form</h1>
+    <form action="confirm.html" onsubmit="return validateForm()" method="post">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="fullName" pattern="[A-Za-z ]{4,}" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="pan">PAN:</label>
+        <input type="text" id="pan" name="pan" pattern="[A-Z]{5}[0-9]{4}[A-Z]" required><br><br>
+
+        <label for="loanAmount">Loan Amount:</label>
+        <input type="number" id="loanAmount" name="loanAmount" required><br><br>
+
+        <input type="submit" value="Submit" onclick="validateFormAndRedirect()">
+
+    </form>
+    //<button onclick="btnclick()">link</button>
+</body>
+</html>
